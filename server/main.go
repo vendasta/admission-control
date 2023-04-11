@@ -59,7 +59,7 @@ func main() {
 
 	ddAgentAddr := os.Getenv("DD_AGENT_ADDR")
 	if ddAgentAddr == "" {
-		ddAgentAddr = "dd-agent.default.svc.cluster.local:8125"
+		ddAgentAddr = "dd-agent.datadog-agent.svc.cluster.local:8125"
 	}
 
 	env := os.Getenv("ENVIRONMENT")
