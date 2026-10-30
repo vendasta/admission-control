@@ -1,4 +1,5 @@
-FROM golang:1.15 as build
+FROM --platform=$BUILDPLATFORM golang:1.15 as build
+ARG TARGETARCH
 
 LABEL repo="https://github.com/vendasta/admission-control"
 ARG GIT_COMMIT=""
@@ -11,7 +12,7 @@ COPY go.sum .
 
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install -v ./...
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=$TARGETARCH go build -v -o /go/bin/server ./server
 
 FROM gcr.io/distroless/base
 COPY --from=build /go/bin/server /
