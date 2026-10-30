@@ -38,14 +38,14 @@ A micro-framework for building and deploying dynamic [Admission Controllers](htt
 ## Deploying the Admission Controller at Vendasta
 
 ### Building
-Admission Controller is build using the supplied docker file, from the route of the project run the command, incrementing the version accordingly
+Admission Controller is built as a multi-arch image (linux/amd64 and linux/arm64) with the supplied Dockerfile. From the root of the project run the command, incrementing the version accordingly. This builds both platforms and pushes the image in one step.
 ```
-docker build --tag=gcr.io/repcore-prod/admission-control:x.x.x .
+docker buildx build --platform linux/amd64,linux/arm64 --tag=gcr.io/repcore-prod/admission-control:x.x.x --push .
 ```
 
-Then push the image
+Confirm both platforms are in the pushed image
 ```
-docker push gcr.io/repcore-prod/admission-control:x.x.x
+docker buildx imagetools inspect gcr.io/repcore-prod/admission-control:x.x.x
 ```
 
 to deploy we use gitops with Argocd, update the image tag in [gitops](https://github.com/vendasta/gitops/tree/master/admission-control) repo
